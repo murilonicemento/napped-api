@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Dependencies\Dependencies;
+use App\Connection;
 
 class User {
   public function getUser() {
-    $connection = Dependencies::connection();
+    $connection = Connection::DB();
 
     $query = "SELECT * FROM users";
 
