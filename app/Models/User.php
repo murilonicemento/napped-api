@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use App\Connection;
+use App\Models\Model;
 
-class User {
+class User extends Model {
   public function register($name, $email, $password) {
     try {
       if ($this->userExist($email)) return false;
 
-      $connection = Connection::DB();
-
       $query = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
 
-      $stmt = $connection->prepare($query);
+      $stmt = $this->connection->prepare($query);
 
       $stmt->bindValue(":name", $name);
       $stmt->bindValue(":email", $email);
@@ -28,11 +26,9 @@ class User {
   }
 
   private function userExist($email) {
-    $connection = Connection::DB();
-
     $query = "SELECT id, name, email, password FROM users WHERE email = :email";
 
-    $stmt = $connection->prepare($query);
+    $stmt = $this->connection->prepare($query);
     $stmt->bindValue(":email", $email);
 
     $stmt->execute();
@@ -41,11 +37,9 @@ class User {
   }
 
   private function getUser($email) {
-    $connection = Connection::DB();
-
     $query = "SELECT id, name, email, password FROM users WHERE email = :email";
 
-    $stmt = $connection->prepare($query);
+    $stmt = $this->connection->prepare($query);
     $stmt->bindValue(":email", $email);
 
     $stmt->execute();
