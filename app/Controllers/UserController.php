@@ -27,7 +27,7 @@ class UserController {
       $user = new User();
       $data = ["user" => $user->login($email)];
 
-      if (!$data["user"]) return ["error" => ["message" => "Usuário não cadastrado. Verifique suas credenciais."], "statusCode" => 400];
+      if (!$data["user"]) return ["error" => ["message" => "Usuário não cadastrado ou credenciais incorretas."], "statusCode" => 400];
 
       if (!password_verify($password, $data["user"]["password"])) return ["error" => ["message" => "Usuário ou senha inválidos. Verifique suas credenciais."], "statusCode" => 401];
 
