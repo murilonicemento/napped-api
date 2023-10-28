@@ -44,6 +44,9 @@ class User extends Model {
 
     $stmt->execute();
 
-    return $stmt->fetch(\PDO::FETCH_ASSOC);
+    $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+    $user["statusCode"] = 200;
+
+    return $user;
   }
 }

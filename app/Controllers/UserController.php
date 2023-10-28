@@ -11,7 +11,7 @@ class UserController {
 
       $newUser = $user->register($email, $name, md5($password));
 
-      if (!$newUser) return ["error" => "Usuário já cadastrado"];
+      if (!$newUser) return ["error" => "Usuário já cadastrado", "statusCode" => 400];
 
       return $newUser;
     } catch (\Exception $exception) {

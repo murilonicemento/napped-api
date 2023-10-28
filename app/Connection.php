@@ -9,7 +9,7 @@ abstract class Connection {
 
       return $connection;
     } catch (\PDOException $exception) {
-      echo "Erro ao realizar conexão ao Banco de Dados";
+      throw $exception;
     }
   }
 }
