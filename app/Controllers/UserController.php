@@ -9,7 +9,7 @@ class UserController {
     try {
       $user = new User();
 
-      $newUser = $user->register($email, $name, md5($password));
+      $newUser = $user->register($email, $name, password_hash($password, PASSWORD_DEFAULT));
 
       if (!$newUser) return ["error" => "Usuário já cadastrado", "statusCode" => 400];
 
