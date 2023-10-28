@@ -40,4 +40,21 @@ return function (App $app) {
       return $response->withHeader("Content-Type", "application/json")->withStatus(500);
     }
   });
+
+  $app->delete("/api/delete/{id}", function (Request $request, Response $response) {
+    try {
+      $id = $request->getAttribute("id");
+
+      $payload = UserController::deleteUser($id);
+      $statusCode = $payload["statusCode"];
+
+      $response->getBody()->write(json_encode($payload));
+
+      return $response->withHeader("Content-Type", "application/json")->withStatus($statusCode);
+    } catch (\Exception $exception) {
+      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário"]));
+
+      return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+    }
+  });
 };
