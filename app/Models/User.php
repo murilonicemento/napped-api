@@ -42,6 +42,21 @@ class User extends Model {
     }
   }
 
+  public function delete($id) {
+    try {
+      $query = "DELETE FROM users WHERE id = :id";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":id", $id);
+
+      $stmt->execute();
+
+      return $stmt;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
   private function userExist($email) {
     try {
       $query = "SELECT id, name, email, password FROM users WHERE email = :email";
