@@ -25,28 +25,52 @@ class User extends Model {
     }
   }
 
+  public function login($email) {
+    try {
+      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
+
+      $stmt->execute();
+
+      $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $user;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
   private function userExist($email) {
-    $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+    try {
+      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
 
-    $stmt = $this->connection->prepare($query);
-    $stmt->bindValue(":email", $email);
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
 
-    $stmt->execute();
+      $stmt->execute();
 
-    return empty($stmt->fetchAll(\PDO::FETCH_ASSOC)) ? false : true;
+      return empty($stmt->fetchAll(\PDO::FETCH_ASSOC)) ? false : true;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
   }
 
   private function getUser($email) {
-    $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+    try {
+      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
 
-    $stmt = $this->connection->prepare($query);
-    $stmt->bindValue(":email", $email);
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
 
-    $stmt->execute();
+      $stmt->execute();
 
-    $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-    $user["statusCode"] = 200;
+      $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-    return $user;
+      return $user;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
   }
 }
