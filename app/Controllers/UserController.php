@@ -9,11 +9,12 @@ class UserController {
     try {
       $user = new User();
 
-      $newUser = $user->register($email, $name, password_hash($password, PASSWORD_DEFAULT));
+      $newUser = ["user" => $user->register($email, $name, password_hash($password, PASSWORD_DEFAULT))];
 
-      if (!$newUser) return ["error" => "Usuário já cadastrado.", "statusCode" => 400];
+      if (!$newUser["user"]) return ["error" => ["message" => "Usuário já cadastrado."], "statusCode" => 400];
 
-      $newUser["statusCode"] = 200;
+      $newUser["message"] = "Usuário cadastrado com sucesso.";
+      $newUser["statusCode"] = 201;
 
       return $newUser;
     } catch (\Exception $exception) {
@@ -24,12 +25,13 @@ class UserController {
   public static function loginUser($email, $password) {
     try {
       $user = new User();
-      $data = $user->login($email);
+      $data = ["user" => $user->login($email)];
 
-      if (!password_verify($password, $data["password"])) return ["error" => "Usuário ou senha inválidos.", "statusCode" => 400];
+      if (!$data["user"]) return ["error" => ["message" => "Usuário não cadastrado. Verifique suas credenciais."], "statusCode" => 400];
 
-      if (!$data) return ["error" => "Usuário não cadastrado.", "statusCode" => 400];
+      if (!password_verify($password, $data["user"]["password"])) return ["error" => ["message" => "Usuário ou senha inválidos. Verifique suas credenciais."], "statusCode" => 401];
 
+      $data["message"] = "Login bem-sucedido.";
       $data["statusCode"] = 200;
 
       return $data;
@@ -43,7 +45,7 @@ class UserController {
       $user = new User();
       $data = $user->delete($id);
 
-      return $data ? ["message" => "Usuário deletado com sucesso."] : ["message" => "Erro ao tentar deletar usuário."];
+      return $data > 0 ? ["message" => "Usuário deletado com sucesso.", "statusCode" => 200] : ["error" => ["message" => "Usuário já foi deletado."], "statusCode" => 400];
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }

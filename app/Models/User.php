@@ -50,8 +50,7 @@ class User extends Model {
       $stmt->bindValue(":id", $id);
 
       $stmt->execute();
-
-      return $stmt;
+      return $stmt->rowCount();
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }
@@ -59,7 +58,7 @@ class User extends Model {
 
   private function userExist($email) {
     try {
-      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+      $query = "SELECT id, name, email FROM users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
@@ -74,7 +73,7 @@ class User extends Model {
 
   private function getUser($email) {
     try {
-      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+      $query = "SELECT id, name, email FROM users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
