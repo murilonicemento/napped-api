@@ -79,16 +79,16 @@ A API estará acessível em <http://localhost:8000>.
 
 - Obter Informações de Séries:
 
-  - Endpoint: GET /api/series
+  - Endpoint: `GET /api/series`
 
 - Obter Informações de Filmes:
-  - Endpoint: GET /api/filmes
+  - Endpoint: `GET /api/filmes`
 
 - Obter Informações de Animes:
-  - Endpoint: GET /api/animes
+  - Endpoint: `GET /api/animes`
 
 - Obter Informações de Jogos:
-  - Endpoint: GET /api/jogos
+  - Endpoint: `GET /api/jogos`
 
 ## Contribuição
 
