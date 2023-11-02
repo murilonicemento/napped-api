@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use App\Controllers\UserController;
 
+
 return function (App $app) {
   $app->post("/api/register", function (Request $request, Response $response) {
     try {
@@ -16,7 +17,7 @@ return function (App $app) {
 
       $response->getBody()->write(json_encode($payload));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus($statusCode);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
     } catch (\Exception $exception) {
       $response->getBody()->write(json_encode(["error" => "Erro ao tentar criar usuário"]));
 
