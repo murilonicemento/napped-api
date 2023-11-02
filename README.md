@@ -59,9 +59,13 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "name": "Nome do Usuário",
-    "email": "usuario@example.com",
-    "password": "senha123"
+    "user": {
+        "id": 1,
+        "name": "Nome do Usuário",
+        "email": "usuario@example.com"
+    },
+    "message": "Usuário cadastrado com sucesso.",
+    "statusCode": 201
   }
   ```
 
@@ -72,8 +76,25 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "email": "usuario@example.com",
-    "password": "senha123"
+    "user": {
+        "id": 1,
+        "name": "Nome do Usuário",
+        "email": "usuario@example.com",
+        "password": "Senha do usuário em formato de HASH"
+    },
+    "message": "Login bem-sucedido.",
+    "statusCode": 200
+  }
+  ```
+
+- Deletar Conta:
+  - Endpoint: `DELETE /api/delete/{id}`
+  - Corpo da Requisição:
+
+  ```json
+  {
+    "message": "Usuário deletado com sucesso.",
+    "statusCode": 200
   }
   ```
 
