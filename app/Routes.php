@@ -21,7 +21,7 @@ return function (App $app) {
     } catch (\Exception $exception) {
       $response->getBody()->write(json_encode(["error" => "Erro ao tentar criar usuário"]));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
 
@@ -34,11 +34,11 @@ return function (App $app) {
 
       $response->getBody()->write(json_encode($payload));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus($statusCode);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
     } catch (\Exception $exception) {
       $response->getBody()->write(json_encode(["error" => "Erro ao realizar login"]));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
 
@@ -51,11 +51,11 @@ return function (App $app) {
 
       $response->getBody()->write(json_encode($payload));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus($statusCode);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
     } catch (\Exception $exception) {
       $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário"]));
 
-      return $response->withHeader("Content-Type", "application/json")->withStatus(500);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
 };
