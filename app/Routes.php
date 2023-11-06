@@ -42,6 +42,24 @@ return function (App $app) {
     }
   });
 
+  $app->put("/api/update/{id}", function (Request $request, Response $response) {
+
+    try {
+      $id = $request->getAttribute("id");
+
+      $payload = UserController::updateUser($id);
+      $statusCode = $payload["statusCode"];
+
+      $response->getBody()->write(json_encode($payload));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
+    } catch (\Exception $exception) {
+      $response->getBody()->write(json_encode(["error" => "Erro ao tentar atualizar usuário"]));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+    }
+  });
+
   $app->delete("/api/delete/{id}", function (Request $request, Response $response) {
     try {
       $id = $request->getAttribute("id");

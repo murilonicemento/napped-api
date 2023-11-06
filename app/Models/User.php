@@ -42,6 +42,19 @@ class User extends Model {
     }
   }
 
+  public function update($id) {
+    try {
+      $query = "UPDATE";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":id", $id);
+
+      $stmt->execute();
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
   public function delete($id) {
     try {
       $query = "DELETE FROM users WHERE id = :id";

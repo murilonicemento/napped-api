@@ -40,6 +40,20 @@ class UserController {
     }
   }
 
+  public static function updateUser($id) {
+    try {
+      $user = new User();
+      $data = $user->update($id);
+
+      $data["message"] = "Atualização bem-sucedida.";
+      $data["statusCode"] = 200;
+
+      return $data;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
   public static function deleteUser($id) {
     try {
       $user = new User();
