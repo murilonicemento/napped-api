@@ -40,7 +40,17 @@ class UserController {
 
     $jwt = JWT::encode($payload, $key, 'HS256', null, $headers);
 
-    return substr($jwt, 0, 84);
+    return $jwt;
+  }
+
+  public static function verifyToken($email, $userToken) {
+    $user = new User();
+
+    $token = $user->validateToken($email);
+
+    if (empty($token)) return ["error" => ["message" => "Token inválido."], "statusCode" => 401];
+
+    return $token;
   }
 
   public static function loginUser($email, $password) {

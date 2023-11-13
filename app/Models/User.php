@@ -9,14 +9,14 @@ class User extends Model {
     try {
       if ($this->userExist($email)) return false;
 
-      $query = "INSERT INTO napped.users (name, email, password, token) VALUES (:name, :email, :password, :token)";
+      $query = "INSERT INTO napped.users (name, email, password, access_token) VALUES (:name, :email, :password, :access_token)";
 
       $stmt = $this->connection->prepare($query);
 
       $stmt->bindValue(":name", $name);
       $stmt->bindValue(":email", $email);
       $stmt->bindValue(":password", $password);
-      $stmt->bindValue(":token", $token);
+      $stmt->bindValue(":access_token", $token);
 
       $isRegistered = $stmt->execute();
 
@@ -72,6 +72,21 @@ class User extends Model {
     }
   }
 
+  public function validateToken($email) {
+    try {
+      $query = "SELECT access_token FROM napped.users WHERE email = :email";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
   private function userExist($email) {
     try {
       $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
@@ -89,7 +104,7 @@ class User extends Model {
 
   private function getUser($email) {
     try {
-      $query = "SELECT id, name, email, token FROM napped.users WHERE email = :email";
+      $query = "SELECT id, name, email, access_token FROM napped.users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);

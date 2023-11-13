@@ -3,12 +3,26 @@
 namespace App;
 
 use Slim\App;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\UserController;
 
 
 return function (App $app) {
+  $authMiddleware = function (Request $request, $handler) {
+    $data = $request->getParsedBody();
+    $email = $data["email"];
+    $token = $request->getHeaderLine('Authorization');
+
+    if (!$token) {
+      return new Response(401, [], 'Token não fornecido');
+    }
+
+    $user = UserController::verifyToken($email, $token);
+
+    return $user;
+  };
+
   $app->post("/api/register", function (Request $request, Response $response) {
     try {
       $data = $request->getParsedBody();
@@ -76,4 +90,7 @@ return function (App $app) {
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
+
+  $app->get("/api/home", function (Request $request, Response $response) {
+  })->add($authMiddleware);
 };
