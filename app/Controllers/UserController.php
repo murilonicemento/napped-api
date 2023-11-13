@@ -3,15 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use Firebase\JWT\JWT;
 
 class UserController {
   public static function registerUser($email, $name, $password) {
     try {
       $user = new User();
 
-      $newUser = ["user" => $user->register($email, $name, password_hash($password, PASSWORD_DEFAULT))];
+      $token = self::generateToken();
 
-      if (!$newUser["user"]) return ["error" => ["message" => "Usuário já cadastrado."], "statusCode" => 400];
+      $newUser = ["user" => $user->register($email, $name, password_hash($password, PASSWORD_DEFAULT), $token)];
+
+      if (!$newUser["user"]) return ["error" => ["message" => "Erro ao cadastrar usuário. Verifique se já é cadastrado ou entre em contato conosco."], "statusCode" => 400];
 
       $newUser["message"] = "Usuário cadastrado com sucesso.";
       $newUser["statusCode"] = 201;
@@ -20,6 +23,24 @@ class UserController {
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }
+  }
+
+  public static function generateToken() {
+    $key = $_ENV["JWT_KEY"];
+    $payload = [
+      'iss' => 'http://example.org',
+      'aud' => 'http://example.com',
+      'iat' => 1356999524,
+      'nbf' => 1357000000
+    ];
+
+    $headers = [
+      'x-forwarded-for' => 'www.google.com'
+    ];
+
+    $jwt = JWT::encode($payload, $key, 'HS256', null, $headers);
+
+    return substr($jwt, 0, 84);
   }
 
   public static function loginUser($email, $password) {

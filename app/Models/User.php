@@ -5,19 +5,22 @@ namespace App\Models;
 use App\Models\Model;
 
 class User extends Model {
-  public function register($name, $email, $password) {
+  public function register($name, $email, $password, $token) {
     try {
       if ($this->userExist($email)) return false;
 
-      $query = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+      $query = "INSERT INTO napped.users (name, email, password, token) VALUES (:name, :email, :password, :token)";
 
       $stmt = $this->connection->prepare($query);
 
       $stmt->bindValue(":name", $name);
       $stmt->bindValue(":email", $email);
       $stmt->bindValue(":password", $password);
+      $stmt->bindValue(":token", $token);
 
-      $stmt->execute();
+      $isRegistered = $stmt->execute();
+
+      if ($isRegistered != 1) return false;
 
       return $this->getUser($email);
     } catch (\Exception $exception) {
@@ -71,7 +74,7 @@ class User extends Model {
 
   private function userExist($email) {
     try {
-      $query = "SELECT id, name, email FROM users WHERE email = :email";
+      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
@@ -86,7 +89,7 @@ class User extends Model {
 
   private function getUser($email) {
     try {
-      $query = "SELECT id, name, email FROM users WHERE email = :email";
+      $query = "SELECT id, name, email, token FROM napped.users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
