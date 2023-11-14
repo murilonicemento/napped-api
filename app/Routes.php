@@ -4,23 +4,34 @@ namespace App;
 
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Psr7\Response as AuthResponse;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use App\Controllers\UserController;
 
 
 return function (App $app) {
-  $authMiddleware = function (Request $request, $handler) {
+  $authMiddleware = function (Request $request, RequestHandler $handler) {
     $data = $request->getParsedBody();
     $email = $data["email"];
     $token = $request->getHeaderLine('Authorization');
+    $response = new AuthResponse();
 
-    if (!$token) {
-      return new Response(401, [], 'Token não fornecido');
+    if (empty($token)) {
+      $response->getBody()->write(json_encode(["error" => ["message" => "Token não fornecido."], "statusCode" => 401]));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
     }
 
-    $user = UserController::verifyToken($email, $token);
+    $isAuth = UserController::verifyToken($email, $token);
 
-    return $user;
+    if ($isAuth === true) {
+      return $handler->handle($request);
+    } else {
+      $response->getBody()->write(json_encode($isAuth));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
+    }
   };
 
   $app->post("/api/register", function (Request $request, Response $response) {
@@ -85,12 +96,32 @@ return function (App $app) {
 
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
     } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário"]));
+      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário."]));
 
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
+  $app->group("/api/private", function ($group) {
+    $group->get("/home/{id}", function (Request $request, Response $response) {
+      try {
+        return $response;
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-  $app->get("/api/home", function (Request $request, Response $response) {
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
+
+    $group->get("/movies", function (Request $request, Response $response) {
+    });
+
+    $group->get("/series", function (Request $request, Response $response) {
+    });
+
+    $group->get("/animes", function (Request $request, Response $response) {
+    });
+
+    $group->get("/games", function (Request $request, Response $response) {
+    });
   })->add($authMiddleware);
 };
