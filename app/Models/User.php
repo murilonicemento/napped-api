@@ -72,16 +72,19 @@ class User extends Model {
     }
   }
 
-  public function validateToken($email) {
+  public function validateToken($id) {
     try {
-      $query = "SELECT access_token FROM napped.users WHERE email = :email";
+      $query = "SELECT access_token FROM napped.users WHERE id = :id";
 
       $stmt = $this->connection->prepare($query);
-      $stmt->bindValue(":email", $email);
+      $stmt->bindValue(":id", $id);
 
       $stmt->execute();
 
-      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+      $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+      $token = $data[0]["access_token"];
+
+      return $token;
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }

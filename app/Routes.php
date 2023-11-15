@@ -13,8 +13,8 @@ use App\Controllers\UserController;
 return function (App $app) {
   $authMiddleware = function (Request $request, RequestHandler $handler) {
     $data = $request->getParsedBody();
-    $email = $data["email"];
-    $token = $request->getHeaderLine('Authorization');
+    $id = $data["id"];
+    $token = $request->getHeaderLine("Authorization");
     $response = new AuthResponse();
 
     if (empty($token)) {
@@ -23,7 +23,7 @@ return function (App $app) {
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
     }
 
-    $isAuth = UserController::verifyToken($email, $token);
+    $isAuth = UserController::verifyToken($id, $token);
 
     if ($isAuth === true) {
       return $handler->handle($request);
@@ -101,10 +101,13 @@ return function (App $app) {
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
     }
   });
+
   $app->group("/api/private", function ($group) {
-    $group->get("/home/{id}", function (Request $request, Response $response) {
+    $group->post("/home", function (Request $request, Response $response) {
       try {
-        return $response;
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
@@ -112,16 +115,52 @@ return function (App $app) {
       }
     });
 
-    $group->get("/movies", function (Request $request, Response $response) {
+    $group->post("/movies", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
     });
 
-    $group->get("/series", function (Request $request, Response $response) {
+    $group->post("/series", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
     });
 
-    $group->get("/animes", function (Request $request, Response $response) {
+    $group->post("/animes", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
     });
 
-    $group->get("/games", function (Request $request, Response $response) {
+    $group->post("/games", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
     });
   })->add($authMiddleware);
 };

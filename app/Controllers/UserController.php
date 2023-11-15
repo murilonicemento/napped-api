@@ -26,7 +26,7 @@ class UserController {
   }
 
   public static function generateToken() {
-    $key = bin2hex(random_bytes(32));
+    $key = $_ENV["JWT_KEY"];
     $payload = [
       'iss' => 'http://example.org',
       'aud' => 'http://example.com',
@@ -43,10 +43,10 @@ class UserController {
     return $jwt;
   }
 
-  public static function verifyToken($email, $userToken) {
+  public static function verifyToken($id, $userToken) {
     $user = new User();
 
-    $token = $user->validateToken($email);
+    $token = $user->validateToken($id);
 
     return empty($token) || $userToken !== $token ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : true;
   }
