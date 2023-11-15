@@ -80,7 +80,8 @@ A API estará acessível em <http://localhost:8000>.
         "id": 1,
         "name": "Nome do Usuário",
         "email": "usuario@example.com",
-        "password": "Senha do usuário em formato de HASH"
+        "password": "Senha do usuário em formato de HASH",
+        "access_token": "Token de Acesso"
     },
     "message": "Login bem-sucedido.",
     "statusCode": 200
