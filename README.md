@@ -98,18 +98,57 @@ A API estará acessível em <http://localhost:8000>.
   }
   ```
 
-- Obter Informações de Séries:
+### Rotas Privadas
 
-  - Endpoint: `GET /api/series`
+- Obter Informações da Home:
+  - Endpoint: `POST /api/private/home`
+
+  ```json
+  {
+    "success": "true",
+    "statusCode": 200
+  }
+  ```
 
 - Obter Informações de Filmes:
-  - Endpoint: `GET /api/filmes`
+  - Endpoint: `POST /api/private/movies`
+
+  ```json
+  {
+    "success": "true",
+    "statusCode": 200
+  }
+  ```
+
+- Obter Informações de Séries:
+  - Endpoint: `POST /api/private/series`
+
+  ```json
+  {
+    "success": "true",
+    "statusCode": 200
+  }
+  ```
 
 - Obter Informações de Animes:
-  - Endpoint: `GET /api/animes`
+  - Endpoint: `POST /api/private/animes`
+
+  ```json
+  {
+    "success": "true",
+    "statusCode": 200
+  }
+  ```
 
 - Obter Informações de Jogos:
-  - Endpoint: `GET /api/jogos`
+  - Endpoint: `POST /api/private/games`
+
+  ```json
+  {
+    "success": "true",
+    "statusCode": 200
+  }
+  ```
 
 ## Contribuição
 
