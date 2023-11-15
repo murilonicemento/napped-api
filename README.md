@@ -14,7 +14,7 @@ Bem-vindo ao projeto Napped API! O Napped é uma fonte de informações sobre o 
 
 ### 1. Pré-requisitos
 
-- PHP 7.4 ou superior
+- PHP 8 ou superior
 - Composer
 - MySQL ou outro banco de dados suportado
 
