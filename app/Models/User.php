@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Model;
+use PDO;
 
 class User extends Model {
   public function register($name, $email, $password, $token) {
@@ -30,7 +31,7 @@ class User extends Model {
 
   public function login($email) {
     try {
-      $query = "SELECT id, name, email, password FROM users WHERE email = :email";
+      $query = "SELECT id, name, email, password, access_token FROM users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
@@ -45,14 +46,23 @@ class User extends Model {
     }
   }
 
-  public function update($id) {
+  public function update($id, $name, $email, $password) {
     try {
-      $query = "UPDATE";
+      $query = "UPDATE napped.users
+      SET 
+        name = CASE WHEN :name IS NOT NULL THEN :name ELSE name END,
+        email = CASE WHEN :email IS NOT NULL THEN :email ELSE email END,
+        password = CASE WHEN :password IS NOT NULL THEN :password ELSE password END
+      WHERE id = :id";
 
       $stmt = $this->connection->prepare($query);
+
+      $stmt->bindValue(":name", $name);
+      $stmt->bindValue(":email", $email);
+      $stmt->bindValue(":password", $password);
       $stmt->bindValue(":id", $id);
 
-      $stmt->execute();
+      return $stmt->execute();
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }
@@ -107,7 +117,7 @@ class User extends Model {
 
   private function getUser($email) {
     try {
-      $query = "SELECT id, name, email, access_token FROM napped.users WHERE email = :email";
+      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);

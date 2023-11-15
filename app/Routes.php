@@ -67,12 +67,11 @@ return function (App $app) {
     }
   });
 
-  $app->put("/api/update/{id}", function (Request $request, Response $response) {
-
+  $app->post("/api/update", function (Request $request, Response $response) {
     try {
-      $id = $request->getAttribute("id");
+      $data = $request->getParsedBody();
 
-      $payload = UserController::updateUser($id);
+      $payload = UserController::updateUser($data["id"], $data["name"], $data["email"], $data["password"]);
       $statusCode = $payload["statusCode"];
 
       $response->getBody()->write(json_encode($payload));
