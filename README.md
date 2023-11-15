@@ -89,6 +89,17 @@ A API estará acessível em <http://localhost:8000>.
   ```
 
 - Deletar Conta:
+  - Endpoint: `PUT /api/update/{id}`
+  - Corpo da Requisição:
+
+  ```json
+  {
+    "message": "Dados do usuário alterado com sucesso.",
+    "statusCode": 200
+  }
+  ```
+
+- Deletar Conta:
   - Endpoint: `DELETE /api/delete/{id}`
   - Corpo da Requisição:
 
