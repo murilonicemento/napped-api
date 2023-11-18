@@ -1,4 +1,4 @@
-# README: Projeto Napped API
+# Projeto Napped API
 
 ## Introdução
 
