@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Connection;
 
 class Model extends Connection {
-
   protected $connection;
 
   public function __construct() {

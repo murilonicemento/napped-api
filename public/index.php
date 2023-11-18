@@ -9,7 +9,7 @@ $dotenv->load();
 
 $app = AppFactory::create();
 
-$authRoutes = require __DIR__ . "/../app/Routes/authRoutes.php";
+$authRoutes = require __DIR__ . "/../app/Routes/userRoutes.php";
 $privatesRoutes = require __DIR__ . "/../app/Routes/privatesRoutes.php";
 
 $authRoutes($app);

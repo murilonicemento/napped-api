@@ -1,78 +1,98 @@
 <?php
 
-namespace App;
+namespace App\Routes;
 
 use Slim\App;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Psr7\Response as AuthResponse;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Controllers\UserController;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use App\Controllers\AuthController;
 
 
 return function (App $app) {
-  $app->post("/api/register", function (Request $request, Response $response) {
-    try {
-      $data = $request->getParsedBody();
-      $payload = UserController::registerUser($data["name"], $data["email"], $data["password"]);
-      $statusCode = $payload["statusCode"];
+  $authMiddleware = function (Request $request, RequestHandler $handler) {
+    $data = $request->getParsedBody();
+    $id = $data["id"];
+    $token = $request->getHeaderLine("Authorization");
+    $response = new AuthResponse();
 
-      $response->getBody()->write(json_encode($payload));
+    if (empty($token)) {
+      $response->getBody()->write(json_encode(["error" => ["message" => "Token não fornecido."], "statusCode" => 401]));
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
-    } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao tentar criar usuário"]));
-
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
     }
-  });
 
-  $app->post("/api/login", function (Request $request, Response $response) {
-    try {
-      $data = $request->getParsedBody();
+    $isAuth = AuthController::verifyToken($id, $token);
 
-      $payload = UserController::loginUser($data["email"], $data["password"]);
-      $statusCode = $payload["statusCode"];
+    if ($isAuth === true) {
+      return $handler->handle($request);
+    } else {
+      $response->getBody()->write(json_encode($isAuth));
 
-      $response->getBody()->write(json_encode($payload));
-
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
-    } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao realizar login"]));
-
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
     }
-  });
+  };
 
-  $app->post("/api/update", function (Request $request, Response $response) {
-    try {
-      $data = $request->getParsedBody();
+  $app->group("/api/private", function ($group) {
+    $group->post("/home", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-      $payload = UserController::updateUser($data["id"], $data["name"], $data["email"], $data["password"]);
-      $statusCode = $payload["statusCode"];
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-      $response->getBody()->write(json_encode($payload));
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
-    } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao tentar atualizar usuário"]));
+    $group->post("/movies", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
-    }
-  });
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-  $app->delete("/api/delete/{id}", function (Request $request, Response $response) {
-    try {
-      $id = $request->getAttribute("id");
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
 
-      $payload = UserController::deleteUser($id);
-      $statusCode = $payload["statusCode"];
+    $group->post("/series", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-      $response->getBody()->write(json_encode($payload));
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
-    } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário."]));
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
-    }
-  });
+    $group->post("/animes", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
+
+    $group->post("/games", function (Request $request, Response $response) {
+      try {
+        $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+      } catch (\Exception $exception) {
+        $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
+
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+      }
+    });
+  })->add($authMiddleware);
 };
