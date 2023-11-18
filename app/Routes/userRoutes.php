@@ -43,11 +43,9 @@ return function (App $app) {
     }
   });
 
-  $app->post("/api/update", function (Request $request, Response $response) {
+  $app->put("/api/update/{id}[/{name}[/{email}[/password]]]", function (Request $request, Response $response, array $args) {
     try {
-      $data = $request->getParsedBody();
-
-      $payload = UserController::updateUser($data["id"], $data["name"], $data["email"], $data["password"]);
+      $payload = UserController::updateUser($args["id"], $args["name"] ?? null, $args["email"] ?? null, $args["password"] ?? null);
       $statusCode = $payload["statusCode"];
 
       $response->getBody()->write(json_encode($payload));
