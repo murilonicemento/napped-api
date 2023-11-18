@@ -12,8 +12,9 @@ use App\Controllers\AuthController;
 
 return function (App $app) {
   $authMiddleware = function (Request $request, RequestHandler $handler) {
-    $data = $request->getParsedBody();
-    $id = $data["id"];
+    $path = $request->getUri()->getPath();
+    $arrPath = explode("/", $path);
+    $id = $arrPath[count($arrPath) - 1];
     $token = $request->getHeaderLine("Authorization");
     $response = new AuthResponse();
 
@@ -35,7 +36,7 @@ return function (App $app) {
   };
 
   $app->group("/api/private", function ($group) {
-    $group->post("/home", function (Request $request, Response $response) {
+    $group->get("/home/{id}", function (Request $request, Response $response) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
@@ -47,7 +48,7 @@ return function (App $app) {
       }
     });
 
-    $group->post("/movies", function (Request $request, Response $response) {
+    $group->get("/movies/{id}", function (Request $request, Response $response) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
@@ -59,7 +60,7 @@ return function (App $app) {
       }
     });
 
-    $group->post("/series", function (Request $request, Response $response) {
+    $group->get("/series/{id}", function (Request $request, Response $response) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
@@ -71,7 +72,7 @@ return function (App $app) {
       }
     });
 
-    $group->post("/animes", function (Request $request, Response $response) {
+    $group->get("/animes/{id}", function (Request $request, Response $response) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
@@ -83,7 +84,7 @@ return function (App $app) {
       }
     });
 
-    $group->post("/games", function (Request $request, Response $response) {
+    $group->get("/games/{id}", function (Request $request, Response $response) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
