@@ -88,8 +88,8 @@ A API estará acessível em <http://localhost:8000>.
   }
   ```
 
-- Deletar Conta:
-  - Endpoint: `POST /api/update`
+- Alterar Dados da Conta:
+  - Endpoint: `PUT /api/update/{id}[/{name}[/{email}[/password]]`
   - Corpo da Requisição:
 
   ```json
@@ -117,7 +117,7 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "success": "true",
+    "success": true,
     "statusCode": 200
   }
   ```
@@ -127,7 +127,7 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "success": "true",
+    "success": true,
     "statusCode": 200
   }
   ```
@@ -137,7 +137,7 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "success": "true",
+    "success": true,
     "statusCode": 200
   }
   ```
@@ -147,7 +147,7 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "success": "true",
+    "success": true,
     "statusCode": 200
   }
   ```
@@ -157,7 +157,7 @@ A API estará acessível em <http://localhost:8000>.
 
   ```json
   {
-    "success": "true",
+    "success": true,
     "statusCode": 200
   }
   ```
