@@ -16,6 +16,10 @@ return function (App $app) {
       $payload = AuthController::registerUser($data["name"], $data["email"], $data["password"]);
       $statusCode = $payload["statusCode"];
 
+      if ($statusCode !== 201) $sendMail = AuthController::sendMail($data["email"], $data["name"]);
+
+      $payload["sendMail"] = $sendMail;
+
       $response->getBody()->write(json_encode($payload));
 
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus($statusCode);
