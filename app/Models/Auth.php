@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use App\Models\Model;
-use App\Models\User;
 
 class Auth extends Model {
   public function register($name, $email, $password, $token) {
     try {
-      $user = new User();
-
-      if ($user->userExist($email)) return false;
+      if ($this->userExist($email)) return false;
 
       $query = "INSERT INTO napped.users (name, email, password, access_token) VALUES (:name, :email, :password, :access_token)";
 
@@ -25,7 +22,7 @@ class Auth extends Model {
 
       if ($isRegistered != 1) return false;
 
-      return $user->getUser($email);
+      return $this->getUser($email);
     } catch (\Exception $exception) {
       return $exception->getMessage();
     }
@@ -61,6 +58,38 @@ class Auth extends Model {
       $token = $data[0]["access_token"];
 
       return $token;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
+  private function userExist($email) {
+    try {
+      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
+
+      $stmt->execute();
+
+      return empty($stmt->fetchAll(\PDO::FETCH_ASSOC)) ? false : true;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
+  private function getUser($email) {
+    try {
+      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":email", $email);
+
+      $stmt->execute();
+
+      $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+      return $user;
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }

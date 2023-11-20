@@ -40,36 +40,4 @@ class User extends Model {
       throw $exception->getMessage();
     }
   }
-
-  public function userExist($email) {
-    try {
-      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
-
-      $stmt = $this->connection->prepare($query);
-      $stmt->bindValue(":email", $email);
-
-      $stmt->execute();
-
-      return empty($stmt->fetchAll(\PDO::FETCH_ASSOC)) ? false : true;
-    } catch (\Exception $exception) {
-      throw $exception->getMessage();
-    }
-  }
-
-  public function getUser($email) {
-    try {
-      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
-
-      $stmt = $this->connection->prepare($query);
-      $stmt->bindValue(":email", $email);
-
-      $stmt->execute();
-
-      $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-      return $user;
-    } catch (\Exception $exception) {
-      throw $exception->getMessage();
-    }
-  }
 }
