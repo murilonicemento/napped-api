@@ -1,4 +1,4 @@
-# README: Projeto Napped API
+# Napped API
 
 ## Introdução
 
@@ -113,7 +113,7 @@ A API estará acessível em <http://localhost:8000>.
 ### Rotas Privadas
 
 - Obter Informações da Home:
-  - Endpoint: `POST /api/private/home`
+  - Endpoint: `GET /api/private/home/{id}`
 
   ```json
   {
@@ -123,7 +123,7 @@ A API estará acessível em <http://localhost:8000>.
   ```
 
 - Obter Informações de Filmes:
-  - Endpoint: `POST /api/private/movies`
+  - Endpoint: `GET /api/private/movies/{id}`
 
   ```json
   {
@@ -133,7 +133,7 @@ A API estará acessível em <http://localhost:8000>.
   ```
 
 - Obter Informações de Séries:
-  - Endpoint: `POST /api/private/series`
+  - Endpoint: `GET /api/private/series/{id}`
 
   ```json
   {
@@ -143,7 +143,7 @@ A API estará acessível em <http://localhost:8000>.
   ```
 
 - Obter Informações de Animes:
-  - Endpoint: `POST /api/private/animes`
+  - Endpoint: `GET /api/private/animes/{id}`
 
   ```json
   {
@@ -153,7 +153,7 @@ A API estará acessível em <http://localhost:8000>.
   ```
 
 - Obter Informações de Jogos:
-  - Endpoint: `POST /api/private/games`
+  - Endpoint: `GET /api/private/games/{id}`
 
   ```json
   {
