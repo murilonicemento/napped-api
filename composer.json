@@ -3,7 +3,8 @@
     "slim/slim": "4.*",
     "slim/psr7": "^1.6",
     "vlucas/phpdotenv": "^5.5",
-    "firebase/php-jwt": "^6.9"
+    "firebase/php-jwt": "^6.9",
+    "phpmailer/phpmailer": "^6.8"
   },
   "autoload": {
     "psr-4": {
