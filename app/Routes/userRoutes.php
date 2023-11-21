@@ -8,17 +8,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\AuthController;
 use App\Controllers\UserController;
 
-
 return function (App $app) {
   $app->post("/api/register", function (Request $request, Response $response) {
     try {
       $data = $request->getParsedBody();
       $payload = AuthController::registerUser($data["name"], $data["email"], $data["password"]);
       $statusCode = $payload["statusCode"];
-
-      if ($statusCode !== 201) $sendMail = AuthController::sendMail($data["email"], $data["name"]);
-
-      $payload["sendMail"] = $sendMail;
 
       $response->getBody()->write(json_encode($payload));
 
