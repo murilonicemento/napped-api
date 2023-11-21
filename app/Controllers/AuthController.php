@@ -59,17 +59,17 @@ class AuthController {
 
     try {
       //Server settings
-      $mail->SMTPDebug = SMTP::DEBUG_SERVER;                //Enable verbose debug output
-      $mail->isSMTP();                                      //Send using SMTP
-      $mail->Host       = "smtp.example.com";               //Set the SMTP server to send through
-      $mail->SMTPAuth   = true;                             //Enable SMTP authentication
-      $mail->Username   = "user@example.com";               //SMTP username
-      $mail->Password   = "secret";                         //SMTP password
-      $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;      //Enable implicit TLS encryption
-      $mail->Port       = 465;                              //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+      $mail->SMTPDebug = SMTP::DEBUG_SERVER;                  //Enable verbose debug output
+      $mail->isSMTP(true);                                    //Send using SMTP
+      $mail->Host       = $_ENV["MAILER_HOST"];               //Set the SMTP server to send through
+      $mail->SMTPAuth   = true;                               //Enable SMTP authentication
+      $mail->Username   = $_ENV["MAILER_USERNAME"];           //SMTP username
+      $mail->Password   = $_ENV["MAILER_PASSWORD"];           //SMTP password
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;        //Enable implicit TLS encryption
+      $mail->Port       = 587;                                //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
       //Recipients
-      $mail->setFrom("napped@gmail.com", "Napped");
+      $mail->setFrom($_ENV["MAILER_USERNAME"], "Napped");
       $mail->addAddress($email, $name);                     //Add a recipient
 
       //Attachments
@@ -90,7 +90,7 @@ class AuthController {
       $mail->send();
 
       return ["message" => "E-mail enviado com sucesso."];
-    } catch (Exception $e) {
+    } catch (Exception $exc) {
       return ["message" => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"];
     }
   }
