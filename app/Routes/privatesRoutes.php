@@ -21,7 +21,7 @@ return function (App $app) {
     if (empty($token)) {
       $response->getBody()->write(json_encode(["error" => ["message" => "Token não fornecido."], "statusCode" => 401]));
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(401);
     }
 
     $isAuth = AuthController::verifyToken($id, $token);
@@ -31,7 +31,7 @@ return function (App $app) {
     } else {
       $response->getBody()->write(json_encode($isAuth));
 
-      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(401);
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(401);
     }
   };
 
@@ -40,11 +40,11 @@ return function (App $app) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
       }
     });
 
@@ -52,11 +52,11 @@ return function (App $app) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
       }
     });
 
@@ -64,11 +64,11 @@ return function (App $app) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
       }
     });
 
@@ -76,11 +76,11 @@ return function (App $app) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
       }
     });
 
@@ -88,11 +88,11 @@ return function (App $app) {
       try {
         $response->getBody()->write(json_encode(["success" => true, "statusCode" => 200]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(200);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(200);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar acessar rota."]));
 
-        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withStatus(500);
+        return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
       }
     });
   })->add($authMiddleware);
