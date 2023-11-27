@@ -73,4 +73,21 @@ return function (App $app) {
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
     }
   });
+  $app->post("/api/validate", function (Request $request, Response $response) {
+
+    try {
+      $data = $request->getParsedBody();
+
+      $payload = AuthController::verifyToken($data["id"], $data["access_token"]);
+      $statusCode = $payload["statusCode"];
+
+      $response->getBody()->write(json_encode($payload));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus($statusCode);
+    } catch (\Exception $exception) {
+      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário."]));
+
+      return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
+    }
+  });
 };
