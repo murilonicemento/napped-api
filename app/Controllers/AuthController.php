@@ -10,9 +10,7 @@ class AuthController {
     try {
       $auth = new Auth();
 
-      $token = self::generateToken();
-
-      $newUser = ["user" => $auth->register($email, $name, password_hash($password, PASSWORD_DEFAULT), $token)];
+      $newUser = ["user" => $auth->register($email, $name, password_hash($password, PASSWORD_DEFAULT))];
 
       if (!$newUser["user"]) return ["error" => ["message" => "Erro ao cadastrar usuário. Verifique se já é cadastrado ou entre em contato conosco."], "statusCode" => 400];
 
@@ -25,13 +23,15 @@ class AuthController {
     }
   }
 
-  public static function generateToken() {
+  public static function generateToken($id) {
     $key = $_ENV["JWT_KEY"];
     $payload = [
+      "sub" => $id,
       'iss' => 'http://example.org',
       'aud' => 'http://example.com',
       'iat' => 1356999524,
-      'nbf' => 1357000000
+      'nbf' => 1357000000,
+      "exp" => time() + (90 * 24 * 60 * 60)
     ];
 
     $headers = [
@@ -60,10 +60,14 @@ class AuthController {
 
       if (!password_verify($password, $data["user"]["password"])) return ["error" => ["message" => "Usuário ou senha inválidos. Verifique suas credenciais."], "statusCode" => 401];
 
-      $data["message"] = "Login bem-sucedido.";
-      $data["statusCode"] = 200;
+      $token = self::generateToken($data["user"]["id"]);
 
-      return $data;
+      $user = ["user" => $auth->updateToken($data["user"]["email"], $token)];
+
+      $user["message"] = "Login bem-sucedido.";
+      $user["statusCode"] = 200;
+
+      return $user;
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }

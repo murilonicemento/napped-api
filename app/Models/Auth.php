@@ -5,18 +5,17 @@ namespace App\Models;
 use App\Models\Model;
 
 class Auth extends Model {
-  public function register($name, $email, $password, $token) {
+  public function register($name, $email, $password) {
     try {
       if ($this->userExist($email)) return false;
 
-      $query = "INSERT INTO napped.users (name, email, password, access_token) VALUES (:name, :email, :password, :access_token)";
+      $query = "INSERT INTO napped.users (name, email, password) VALUES (:name, :email, :password)";
 
       $stmt = $this->connection->prepare($query);
 
       $stmt->bindValue(":name", $name);
       $stmt->bindValue(":email", $email);
       $stmt->bindValue(":password", $password);
-      $stmt->bindValue(":access_token", $token);
 
       $isRegistered = $stmt->execute();
 
@@ -40,6 +39,22 @@ class Auth extends Model {
       $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
       return $user;
+    } catch (\Exception $exception) {
+      throw $exception->getMessage();
+    }
+  }
+
+  public function updateToken($email, $token) {
+    try {
+      $query = "UPDATE napped.users SET access_token = :access_token WHERE email = :email";
+
+      $stmt = $this->connection->prepare($query);
+      $stmt->bindValue(":access_token", $token);
+      $stmt->bindValue(":email", $email);
+
+      $stmt->execute();
+
+      return $this->getUser($email);
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }
@@ -80,7 +95,7 @@ class Auth extends Model {
 
   private function getUser($email) {
     try {
-      $query = "SELECT id, name, email FROM napped.users WHERE email = :email";
+      $query = "SELECT id, name, email, password, access_token FROM napped.users WHERE email = :email";
 
       $stmt = $this->connection->prepare($query);
       $stmt->bindValue(":email", $email);
