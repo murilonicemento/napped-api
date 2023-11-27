@@ -4,9 +4,6 @@ namespace App\Controllers;
 
 use App\Models\Auth;
 use Firebase\JWT\JWT;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
 class AuthController {
   public static function registerUser($email, $name, $password) {
@@ -51,7 +48,7 @@ class AuthController {
 
     $token = $auth->validateToken($id);
 
-    return empty($token) || $userToken !== $token ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : true;
+    return empty($token) || $userToken !== $token ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : ["validated" => true, "statusCode" => 200];
   }
 
   public static function loginUser($email, $password) {

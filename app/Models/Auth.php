@@ -54,8 +54,8 @@ class Auth extends Model {
 
       $stmt->execute();
 
-      $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-      $token = $data[0]["access_token"];
+      $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+      $token = $data["access_token"];
 
       return $token;
     } catch (\Exception $exception) {
