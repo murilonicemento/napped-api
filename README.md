@@ -62,7 +62,9 @@ A API estará acessível em <http://localhost:8000>.
     "user": {
         "id": 1,
         "name": "Nome do Usuário",
-        "email": "usuario@example.com"
+        "email": "usuario@example.com",
+        "password": "Senha do usuário em formato de HASH",
+        "access_token": "Token de Acesso que terá inicialmente seu valor como NULL"
     },
     "message": "Usuário cadastrado com sucesso.",
     "statusCode": 201
@@ -112,52 +114,19 @@ A API estará acessível em <http://localhost:8000>.
 
 ### Rotas Privadas
 
-- Obter Informações da Home:
-  - Endpoint: `GET /api/private/home/{id}`
+- Obter Informações das rotas privadas:
+  - Endpoint: `POST /api/validate`
 
   ```json
   {
-    "success": true,
-    "statusCode": 200
-  }
-  ```
-
-- Obter Informações de Filmes:
-  - Endpoint: `GET /api/private/movies/{id}`
-
-  ```json
-  {
-    "success": true,
-    "statusCode": 200
-  }
-  ```
-
-- Obter Informações de Séries:
-  - Endpoint: `GET /api/private/series/{id}`
-
-  ```json
-  {
-    "success": true,
-    "statusCode": 200
-  }
-  ```
-
-- Obter Informações de Animes:
-  - Endpoint: `GET /api/private/animes/{id}`
-
-  ```json
-  {
-    "success": true,
-    "statusCode": 200
-  }
-  ```
-
-- Obter Informações de Jogos:
-  - Endpoint: `GET /api/private/games/{id}`
-
-  ```json
-  {
-    "success": true,
+    "user": {
+        "id": 1,
+        "name": "Nome do Usuário",
+        "email": "usuario@example.com",
+        "password": "Senha do usuário em formato de HASH",
+        "access_token": "Token de Acesso"
+    },
+    "validated": true,
     "statusCode": 200
   }
   ```
