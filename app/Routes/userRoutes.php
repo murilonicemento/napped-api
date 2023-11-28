@@ -78,7 +78,7 @@ return function (App $app) {
     try {
       $data = $request->getParsedBody();
 
-      $payload = AuthController::verifyToken($data["id"], $data["access_token"]);
+      $payload = AuthController::verifyToken($data["access_token"]);
       $statusCode = $payload["statusCode"];
 
       $response->getBody()->write(json_encode($payload));

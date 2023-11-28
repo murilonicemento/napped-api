@@ -60,19 +60,18 @@ class Auth extends Model {
     }
   }
 
-  public function validateToken($id) {
+  public function validateToken($token) {
     try {
-      $query = "SELECT access_token FROM napped.users WHERE id = :id";
+      $query = "SELECT id, name, email, password, access_token FROM napped.users WHERE access_token = :access_token";
 
       $stmt = $this->connection->prepare($query);
-      $stmt->bindValue(":id", $id);
+      $stmt->bindValue(":access_token", $token);
 
       $stmt->execute();
 
       $data = $stmt->fetch(\PDO::FETCH_ASSOC);
-      $token = $data["access_token"];
 
-      return $token;
+      return $data;
     } catch (\Exception $exception) {
       throw $exception->getMessage();
     }

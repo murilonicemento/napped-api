@@ -43,12 +43,12 @@ class AuthController {
     return $jwt;
   }
 
-  public static function verifyToken($id, $userToken) {
+  public static function verifyToken($userToken) {
     $auth = new Auth();
 
-    $token = $auth->validateToken($id);
+    $user = $auth->validateToken($userToken);
 
-    return empty($token) || $userToken !== $token ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : ["validated" => true, "statusCode" => 200];
+    return empty($user) ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : ["user" => $user, "validated" => true, "statusCode" => 200];
   }
 
   public static function loginUser($email, $password) {
