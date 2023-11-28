@@ -27,18 +27,18 @@ class AuthController {
     $key = $_ENV["JWT_KEY"];
     $payload = [
       "sub" => $id,
-      'iss' => 'http://example.org',
-      'aud' => 'http://example.com',
+      'iss' => $_ENV["JWT_ISS"],
+      'aud' => $_ENV["JWT_AUD"],
       'iat' => 1356999524,
       'nbf' => 1357000000,
       "exp" => time() + (90 * 24 * 60 * 60)
     ];
 
     $headers = [
-      'x-forwarded-for' => 'www.google.com'
+      "x-forwarded-for" => "www.google.com"
     ];
 
-    $jwt = JWT::encode($payload, $key, 'HS256', null, $headers);
+    $jwt = JWT::encode($payload, $key, "HS256", null, $headers);
 
     return $jwt;
   }
