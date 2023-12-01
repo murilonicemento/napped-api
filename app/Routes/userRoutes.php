@@ -85,7 +85,7 @@ return function (App $app) {
 
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus($statusCode);
     } catch (\Exception $exception) {
-      $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário."]));
+      $response->getBody()->write(json_encode(["error" => "Erro ao tentar validar token do usuário."]));
 
       return $response->withHeader("Content-Type", "application/json")->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")->withHeader('Access-Control-Allow-Headers', 'Content-Type')->withStatus(500);
     }

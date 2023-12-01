@@ -19,36 +19,44 @@ class AuthController {
 
       return $newUser;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar registrar usuário: " . $exception->getMessage());
     }
   }
 
   public static function generateToken($id) {
-    $key = $_ENV["JWT_KEY"];
-    $payload = [
-      "sub" => $id,
-      'iss' => $_ENV["JWT_ISS"],
-      'aud' => $_ENV["JWT_AUD"],
-      'iat' => 1356999524,
-      'nbf' => 1357000000,
-      "exp" => time() + (90 * 24 * 60 * 60)
-    ];
+    try {
+      $key = $_ENV["JWT_KEY"];
+      $payload = [
+        "sub" => $id,
+        'iss' => $_ENV["JWT_ISS"],
+        'aud' => $_ENV["JWT_AUD"],
+        'iat' => 1356999524,
+        'nbf' => 1357000000,
+        "exp" => time() + (90 * 24 * 60 * 60)
+      ];
 
-    $headers = [
-      "x-forwarded-for" => "www.google.com"
-    ];
+      $headers = [
+        "x-forwarded-for" => "www.google.com"
+      ];
 
-    $jwt = JWT::encode($payload, $key, "HS256", null, $headers);
+      $jwt = JWT::encode($payload, $key, "HS256", null, $headers);
 
-    return $jwt;
+      return $jwt;
+    } catch (\Exception $exception) {
+      throw new \Exception("Erro ao tentar gerar token de acesso: " . $exception->getMessage());
+    }
   }
 
   public static function verifyToken($userToken) {
-    $auth = new Auth();
+    try {
+      $auth = new Auth();
 
-    $user = $auth->validateToken($userToken);
+      $user = $auth->validateToken($userToken);
 
-    return empty($user) ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : ["user" => $user, "validated" => true, "statusCode" => 200];
+      return empty($user) ? ["error" => ["message" => "Token inválido."], "statusCode" => 401] : ["user" => $user, "validated" => true, "statusCode" => 200];
+    } catch (\Exception $exception) {
+      throw new \Exception("Erro ao tentar verificar token fornecido: " . $exception->getMessage());
+    }
   }
 
   public static function loginUser($email, $password) {
@@ -69,7 +77,7 @@ class AuthController {
 
       return $user;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar logar usuário: " . $exception->getMessage());
     }
   }
 }

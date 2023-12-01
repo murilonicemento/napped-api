@@ -23,7 +23,7 @@ class Auth extends Model {
 
       return $this->getUser($email);
     } catch (\Exception $exception) {
-      return $exception->getMessage();
+      throw new \Exception("Erro ao cadastrar dados do usuário: " . $exception->getMessage());
     }
   }
 
@@ -40,7 +40,7 @@ class Auth extends Model {
 
       return $user;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar recuperar dados do usuário logado: " . $exception->getMessage());
     }
   }
 
@@ -56,7 +56,7 @@ class Auth extends Model {
 
       return $this->getUser($email);
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar inserir token de acesso do usuário logado: " . $exception->getMessage());
     }
   }
 
@@ -73,7 +73,7 @@ class Auth extends Model {
 
       return $data;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar recuperar dados do usuário com base no token de acesso: " . $exception->getMessage());
     }
   }
 
@@ -88,7 +88,7 @@ class Auth extends Model {
 
       return empty($stmt->fetchAll(\PDO::FETCH_ASSOC)) ? false : true;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar verificar se o usuário existe: " . $exception->getMessage());
     }
   }
 
@@ -105,7 +105,7 @@ class Auth extends Model {
 
       return $user;
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar recuperar dados do usuário: " . $exception->getMessage());
     }
   }
 }

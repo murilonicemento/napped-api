@@ -23,7 +23,7 @@ class User extends Model {
 
       return $stmt->execute();
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar atualizar dados do usuário: " . $exception->getMessage());
     }
   }
 
@@ -37,7 +37,7 @@ class User extends Model {
       $stmt->execute();
       return $stmt->rowCount();
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar deletar usuário: " . $exception->getMessage());
     }
   }
 }

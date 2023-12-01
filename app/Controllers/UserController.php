@@ -12,7 +12,7 @@ class UserController {
 
       return $isUpdated ? ["message" => "Dados do usuário alterado com sucesso.", "statusCode"  => 200] : ["error" => ["message" => "Erro ao atualizar dados do usuário."], "statusCode" => 400];
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar atualizar dados do usuário: " . $exception->getMessage());
     }
   }
 
@@ -23,7 +23,7 @@ class UserController {
 
       return $data > 0 ? ["message" => "Usuário deletado com sucesso.", "statusCode" => 200] : ["error" => ["message" => "Erro ao deletar usuário. Talvez usuário já tenha sido deletado"], "statusCode" => 400];
     } catch (\Exception $exception) {
-      throw $exception->getMessage();
+      throw new \Exception("Erro ao tentar deletar usuário: " . $exception->getMessage());
     }
   }
 }
