@@ -6,9 +6,7 @@ Bem-vindo ao projeto Napped API! O Napped é uma fonte de informações sobre o 
 
 ## Funcionalidades
 
-- **Registro de Usuário e Login:** Os usuários podem se registrar para obter uma conta e fazer login para acessar recursos exclusivos.
-
-- **Informações Nerd:** Fornece informações sobre séries, filmes, animes e jogos. Os usuários podem explorar detalhes, classificações e outras informações relacionadas.
+- **Registro de Usuário e Login:** Os usuários podem se registrar para obter uma conta, fazer login para acessar recursos exclusivos, atualizar informações e deletar sua conta.
 
 ## Configuração do Ambiente
 
