@@ -57,9 +57,10 @@ return function (App $app) {
       }
     });
 
-    $group->put("/update/{id}[/{name}[/{email}[/password]]]", function (Request $request, Response $response, array $args) {
+    $group->post("/update/{id}", function (Request $request, Response $response, array $args) {
       try {
-        $payload = UserController::updateUser($args["id"], $args["name"] ?? null, $args["email"] ?? null, $args["password"] ?? null);
+        $data = $request->getParsedBody();
+        $payload = UserController::updateUser($args["id"], $data["name"] ?? null, $data["email"] ?? null, $data["password"] ?? null);
         $statusCode = $payload["statusCode"];
 
         $response->getBody()->write(json_encode($payload));
