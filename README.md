@@ -13,7 +13,7 @@ Bem-vindo ao projeto Napped API! O Napped é uma fonte de informações sobre o 
 ### 1. Pré-requisitos
 
 - PHP 8 ou superior
-- Composer
+- Composer instalado em seu sistema
 - MySQL ou outro banco de dados suportado
 
 ### 2. Configuração do Banco de Dados
@@ -48,6 +48,28 @@ php -S localhost:8000 -t public
 
 A API estará acessível em <http://localhost:8000>.
 
+## Estrutura do Banco de Dados
+
+### Tabelas
+
+#### Usuários
+
+- **Nome da Tabela:** `users`
+
+| Campo         | Tipo            | Descrição                                       |
+| ------------- | --------------- | ----------------------------------------------- |
+| id            | INT PRIMARY KEY | Identificador único do usuário                  |
+| name          | VARCHAR(200)    | Nome do usuário                                 |
+| email         | VARCHAR(200)    | Endereço de e-mail do usuário                   |
+| password      | VARCHAR(200)    | Senha do usuário (formato de HASH)              |
+| access_token  | VARCHAR(400)    | Token de acesso do usuário                      |
+| created_at    | TIMESTAMP       | Data e hora de criação do registro              |
+| updated_at    | TIMESTAMP       | Data e hora da última atualização do registro   |
+
+### Relacionamentos
+
+- Não há relacionamentos complexos na tabela de usuários por enquanto.
+
 ## Uso da API
 
 - Registro de Usuário:
@@ -69,6 +91,10 @@ A API estará acessível em <http://localhost:8000>.
   }
   ```
 
+  ```bash
+  curl -X POST -F "name=Nome do Usuário" -F "email=<usuario@example.com>" -F "password=Senha do usuário" <http://localhost:8000/api/register>
+  ```
+
 - Login:
 
   - Endpoint: `POST /api/login`
@@ -88,8 +114,12 @@ A API estará acessível em <http://localhost:8000>.
   }
   ```
 
+  ```bash
+  curl -X POST -F "email=<usuario@example.com>" -F "password=Senha do usuário" <http://localhost:8000/api/login>
+  ```
+
 - Alterar Dados da Conta:
-  - Endpoint: `PUT /api/update/{id}[/{name}[/{email}[/password]]`
+  - Endpoint: `POST /api/update/{id}`
   - Corpo da Requisição:
 
   ```json
@@ -97,6 +127,10 @@ A API estará acessível em <http://localhost:8000>.
     "message": "Dados do usuário alterado com sucesso.",
     "statusCode": 200
   }
+  ```
+
+  ```bash
+  curl -X POST -F "name=Novo Nome do Usuário" -F "email=novoemail@example.com" -F "password=Nova Senha" http://localhost:8000/api/update/1
   ```
 
 - Deletar Conta:
@@ -108,6 +142,10 @@ A API estará acessível em <http://localhost:8000>.
     "message": "Usuário deletado com sucesso.",
     "statusCode": 200
   }
+  ```
+
+  ```bash
+  curl -X DELETE -F http://localhost:8000/api/update/1
   ```
 
 ### Rotas Privadas
@@ -127,6 +165,10 @@ A API estará acessível em <http://localhost:8000>.
     "validated": true,
     "statusCode": 200
   }
+  ```
+
+  ```bash
+  curl -X POST -F "access_token=SeuTokenDeAcesso" http://localhost:8000/api/validate
   ```
 
 ## Contribuição
