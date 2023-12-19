@@ -10,18 +10,6 @@ use App\Controllers\UserController;
 use Slim\Routing\RouteCollectorProxy;
 
 return function (App $app) {
-  $app->options("/{routes:.+}", function ($request, $response, $args) {
-    return $response;
-  });
-
-  $app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
-    return $response
-      ->withHeader("Content-Type", "application/json")
-      ->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")
-      ->withHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
-      ->withHeader("Access-Control-Allow-Methods", "POST, DELETE, OPTIONS");
-  });
 
   $app->group("/api", function (RouteCollectorProxy $group) {
     $group->post("/register", function (Request $request, Response $response) {

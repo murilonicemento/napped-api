@@ -8,20 +8,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\AuthController;
 
 return function (App $app) {
-  $app->options("/{routes:.+}", function ($request, $response, $args) {
-    return $response;
-  });
 
-  $app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
-    return $response
-      ->withHeader("Content-Type", "application/json")
-      ->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")
-      ->withHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
-      ->withHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
-  });
-
-  $app->get("/validate", function (Request $request, Response $response) {
+  $app->get("/api/validate", function (Request $request, Response $response) {
     try {
       $authorizationHeader = $request->getHeader("Authorization");
 
