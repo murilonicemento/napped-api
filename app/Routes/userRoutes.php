@@ -20,7 +20,7 @@ return function (App $app) {
       ->withHeader("Content-Type", "application/json")
       ->withHeader("Access-Control-Allow-Origin", "http://localhost:5173")
       ->withHeader("Access-Control-Allow-Headers", "Content-Type, Authorization")
-      ->withHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+      ->withHeader("Access-Control-Allow-Methods", "POST, DELETE, OPTIONS");
   });
 
   $app->group("/api", function (RouteCollectorProxy $group) {
@@ -85,31 +85,6 @@ return function (App $app) {
         return $response->withStatus($statusCode);
       } catch (\Exception $exception) {
         $response->getBody()->write(json_encode(["error" => "Erro ao tentar deletar usuário: {$exception}"]));
-
-        return $response->withStatus(500);
-      }
-    });
-
-    $group->get("/validate", function (Request $request, Response $response) {
-      try {
-        $authorizationHeader = $request->getHeader("Authorization");
-
-        if (!empty($authorizationHeader) && preg_match("/Bearer\s+(.+)/", $authorizationHeader[0], $matches)) {
-          $token = $matches[1];
-
-          $payload = AuthController::verifyToken($token);
-          $statusCode = $payload["statusCode"];
-
-          $response->getBody()->write(json_encode($payload));
-
-          return $response->withStatus($statusCode);
-        } else {
-          $response->getBody()->write(json_encode(["error" => "Cabeçalho de autorização ausente ou em formato inválido"]));
-
-          return $response->withStatus(401);
-        }
-      } catch (\Exception $exception) {
-        $response->getBody()->write(json_encode(["error" => "Erro ao tentar validar token do usuário: {$exception}"]));
 
         return $response->withStatus(500);
       }
