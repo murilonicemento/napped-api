@@ -31,7 +31,6 @@ return function (App $app) {
     $group->post("/login", function (Request $request, Response $response) {
       try {
         $data = $request->getParsedBody();
-
         $payload = AuthController::loginUser($data["email"], $data["password"]);
         $statusCode = $payload["statusCode"];
 
@@ -64,7 +63,6 @@ return function (App $app) {
     $group->delete("/delete/{id}", function (Request $request, Response $response) {
       try {
         $id = $request->getAttribute("id");
-
         $payload = UserController::deleteUser($id);
         $statusCode = $payload["statusCode"];
 
